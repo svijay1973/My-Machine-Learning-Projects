@@ -1,0 +1,40 @@
+library(XML)
+library(RCurl)
+web<-readHTMLTable("C:\\JigBD0206\\The World's Most Valuable Brands List - Forbes.html")
+class(web)
+names(web)
+summary(web)
+web1<-data.frame(web$the_list)
+class(web1)
+str(web1)
+head(web1)
+web1<-web1[,-1]
+web1
+attach(web1)
+gsub("#"," ",web1)
+gsub
+names(web1)
+head(web1$Rank)
+attach(web1)
+library(ggplot2)
+library(dplyr)
+unique(web1$Industry)
+web_tech<-filter(web1,Industry=="Technology")
+web_lux<-filter(web1,Industry=="Luxury")
+web_auto<-filter(web1,Industry=="Automotive")
+web_fin<-filter(web1,Industry=="Financial Services")
+str(web_tech)
+web_tech$Company.Advertising<-as.numeric(web_tech$Company.Advertising)
+web_tech$Brand.Revenue<-as.numeric(web_tech$Brand.Revenue)
+p<-ggplot(web_tech, aes(x=Company.Advertising,y=Brand.Revenue,label=Brand),xlim=c(0,10) ,ylim=c(0,200),cex =0.6)
+p+geom_point(aes(colour = Brand, size=Brand.Value),na.rm = FALSE,alpha=0.5)+geom_text(aes(label=Brand),hjust =0, vjust=2)
+
+p<-ggplot(web_lux, aes(x=Company.Advertising,y=Brand.Revenue,label=Brand),xlim=c(0,10) ,ylim=c(0,200),cex =0.6)
+p+geom_point(aes(colour = Brand, size=Brand.Value),na.rm = FALSE,alpha=0.5)+geom_text(aes(label=Brand),hjust =0, vjust=2)
+
+p<-ggplot(web_auto, aes(x=Company.Advertising,y=Brand.Revenue,label=Brand),xlim=c(0,10) ,ylim=c(0,200),cex =0.6)
+p+geom_point(aes(colour = Brand, size=Brand.Value),na.rm = FALSE,alpha=0.5)+geom_text(aes(label=Brand),hjust =0, vjust=2)
+
+p<-ggplot(web_fin, aes(x=Company.Advertising,y=Brand.Revenue,label=Brand),xlim=c(0,10) ,ylim=c(0,200),cex =0.6)
+p+geom_point(aes(colour = Brand, size=Brand.Value),na.rm = FALSE,alpha=0.5)+geom_text(aes(label=Brand),hjust =0, vjust=2)
+
